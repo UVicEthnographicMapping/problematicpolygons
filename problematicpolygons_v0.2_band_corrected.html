@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style type="text/css">
+    #map {
+      height: 100%;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+	#legend {
+	    border-radius: 15px;
+	    background: white;
+	    padding: 5px;
+	    margin: 10px;
+	    transition: all 0.5s ease  0.5s !important;
+    }
+    #legend:hover {
+    	box-shadow: 0 0 112px 10px #1DB9E8;
+    } 
+	#padding-top-bottom-zero{
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	#margin-top-bottom-zero{
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+  
+    table{
+        border-spacing:0px; /* Removes the cell spacing via CSS */
+        border-collapse: collapse;
+        overflow: auto;
+        width: 100%;
+    }
+	
+  </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+ 
+    <div id="legend" style="diplay:none">
+
+<table class="nospacing" cellspacing="0">
+  <tr>
+    <th>Band</th>
+    <th>Colour</th>
+  </tr>
+  
+  <tr>
+    <td>Cowichan</td>
+    <td><text style="color:rgb(0, 153, 153);">━━━━</text></td>
+  </tr>
+  
+  <tr>
+    <td>Penelakut</td>
+    <td><text style="color:rgb(0, 112, 192);">━━━━</text></td>
+  </tr>
+    
+   <tr>
+    <td>Lyackson</td>
+    <td><text style="color:rgb(0, 112, 192);">━━━━</text></td>
+  </tr>
+   
+    <tr>
+    <td>Stzuminus</td>
+    <td><text style="color:rgb(0, 112, 192);">━━━━</text></td>
+  </tr>
+    
+    <tr>
+    <td>Snaw-naw-as'</td>
+    <td><text style="color:rgb(0, 176, 240);">━━━━</text></td>
+  </tr>
+    
+    <tr>
+    <td>Snuneymuxw</td>
+    <td><text style="color:rgb(0, 176, 240);">━━━━</text></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>Malahat</td>
+    <td><text style="color:rgb(55, 86, 35);">━━━━</text></td>
+  </tr>
+   <tr>
+    <td>Pauquachin</td>
+    <td><text style="color:rgb(0, 176, 80);">━━━━</text></td>
+  </tr>
+    <tr>
+    <td>Saanich</td>
+    <td><text style="color:rgb(59, 171, 90);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Strait Salish'</td>
+    <td><text style="color:rgb(146, 208, 80);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Tsartlip</td>
+    <td><text style="color:rgb(146, 208, 80);">━━━━</text></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>Tsawout</td>
+    <td><text style="color:rgb(146, 208, 80);">━━━━</text></td>
+  </tr>
+   <tr>
+    <td>Tseycum</td>
+    <td><text style="color:rgb(0, 154, 0);">━━━━</text></td>
+  </tr>
+    <tr>
+    <td>Songhees</td>
+    <td><text style="color:rgb(284, 130, 53);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Lummi</td>
+    <td><text style="color:rgb(59, 171, 90);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Semiahoo</td>
+    <td><text style="color:rgb(59, 171, 90);">━━━━</text></td>
+  </tr>
+  </tr>
+  <tr>
+    <td>Samish</td>
+    <td><text style="color:rgb(59, 171, 90);">━━━━</text></td>
+  </tr>
+   <tr>
+    <td>TSou-ke</td>
+    <td><text style="color:rgb(59, 171, 90);">━━━━</text></td>
+  </tr>
+    <tr>
+    <td>Comox</td>
+    <td><text style="color:rgb(238, 176, 0);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Nitinat</td>
+    <td><text style="color:rgb(112, 48, 160);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Hesquiaht</td>
+    <td><text style="color:rgb(112, 48, 160);">━━━━</text></td>
+  </tr>  
+      <tr>
+    <td>Kwantlen</td>
+    <td><text style="color:rgb(237, 185, 220);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Katzie</td>
+    <td><text style="color:rgb(70, 18, 53);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Kwikwetlem</td>
+    <td><text style="color:rgb(255, 102, 255);">━━━━</text></td>
+  </tr>  
+      <tr>
+    <td>Musqueam</td>
+    <td><text style="color:rgb(177, 45, 133);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Snokomish</td>
+    <td><text style="color:rgb(255, 102, 153);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Tsawwassen</td>
+    <td><text style="color:rgb(188, 0, 188);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Nooksack</td>
+    <td><text style="color:rgb(204, 51, 0);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Sechelt</td>
+    <td><text style="color:rgb(198, 89, 17);">━━━━</text></td>
+  </tr>
+     <tr>
+    <td>Squamish</td>
+    <td><text style="color:rgb(237, 125, 49);">━━━━</text></td>
+  </tr> 
+    <tr>
+    <td>Swinomish</td><td><text style="color:rgb(255, 167, 37);">━━━━</text></td></tr>
+     <tr>
+    <td>Tulalip</td><td><text style="color:rgb(131, 60, 12);">━━━━</text></td></tr>
+     <tr>
+         
+</table>
+
+</div>
+
+	 
+  <script>
+    //creates the blank Google Map
+    let map;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 48.779, lng: -123.625 },
+        zoom: 9,
+        //styles the look of the map, generated using https://mapstyle.withgoogle.com/
+        styles: [
+          { "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }] },
+          { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+          { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
+          { "elementType": "labels.text.stroke", "stylers": [{ "color": "#f5f5f5" }] },
+          { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "administrative.land_parcel", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] },
+          { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
+          { "featureType": "poi", "elementType": "labels.text", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
+          { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
+          { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
+          { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }] },
+          { "featureType": "road", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.arterial", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
+          { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#dadada" }] },
+          { "featureType": "road.highway", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
+          { "featureType": "road.local", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.local", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
+          { "featureType": "transit", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
+          { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
+          { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#c9c9c9" }] },
+          { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }],
+        disableDoubleClickZoom: true,
+        streetViewControl: false
+      });
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+    }
+  </script>
+
+  <script>
+    //tells the map to execute an overlay
+    function createOverlay(spreadsheetData) {
+
+      //importing and setting data from the Google Sheet which is online and publicly shared https://docs.google.com/spreadsheets/d/1AAVrBe_A0SqfTY_l0WxrOhRBVrOOgdJEKrBehxdF0Co/edit#gid=0
+      //telling the whole column to read to establish the scatterplot and the start (from) and end (to) points for the arcs
+      let data = spreadsheetData.feed.entry;
+
+      let arc_data = [];
+      for (let i = 0; i < data.length; i++) {
+        arc_data.push({
+          from: {
+            name: 'From',
+            coordinates: [Number(data[i].gsx$longitudesite.$t), Number(data[i].gsx$latitudesite.$t)]
+          },
+
+          to: {
+            name: 'To',
+            coordinates: [Number(data[i].gsx$longitudeorigin.$t), Number(data[i].gsx$latitudeorigin.$t)]
+          },
+		  
+          band_name: data[i].gsx$band.$t,
+		  name: data[i].gsx$nameorigionaltosource.$t,
+		  language: data[i].gsx$language.$t,
+          usage: data[i].gsx$usage.$t,
+		  source: data[i].gsx$idfromsource.$t
+		  		 							
+		});
+      }
+      console.log(data);
+      console.log(arc_data);
+
+      //setting colours for the arcs, the bands need to match the spreadsheet identically
+      const BandColourMapping = {
+        'Cowichan': [0, 153, 153, 194],
+        'Penelakut': [0, 112, 192, 194],
+        'Lyackson': [0, 112, 192, 194],
+        'Stzuminus': [0, 112, 192, 194],
+        'Snaw-naw-as': [0, 176, 240, 194],
+        'Snuneymuxw': [0, 176, 240, 194],
+
+        'Malahat': [55, 86, 35, 194],
+        'Pauquachin': [0, 176, 80, 194],
+        'Saanich': [59, 171, 90, 194],
+        'Strait_Salish': [146, 208, 80, 194],
+        'Tsartlip': [146, 208, 80, 194],
+        'Tsawout': [146, 208, 80, 194],
+        'Tseycum': [0, 154, 0, 194],
+        'Songhees': [84, 130, 53, 194],
+        'Lummi': [59, 171, 90, 194],
+        'Semiahoo': [59, 171, 90, 194],
+        'Samish': [59, 171, 90, 194],
+        'TSou-ke': [59, 171, 90, 194],
+
+        'Comox': [238, 176, 0, 194],
+
+        'Nitinat': [112, 48, 160, 194],
+        'Hesquiaht': [112, 48, 160, 194],
+
+        'Kwantlen': [237, 185, 220, 194],
+        'Katzie': [70, 18, 53, 194],
+        'Kwikwetlem': [255, 102, 255, 194],
+        'Musqueam': [177, 45, 133, 194],
+        'Snokomish': [255, 102, 153, 194],
+        'Tsawwassen': [188, 0, 188, 194],
+
+        'Nooksack': [204, 51, 0, 194],
+        'Sechelt': [198, 89, 17, 194],
+        'Squamish': [237, 125, 49, 194],
+        'Swinomish': [255, 167, 37, 194],
+        'Tulalip': [131, 60, 12, 194],
+      };
+
+      //styling the arcs, refering to the section above to get the data, and to the section directly above to get the colours based on bands
+      //data = arc_data;
+ 
+      const arclayer = new ArcLayer({
+
+        id: 'arc-layer',
+        data: arc_data,
+        getWidth: 1,
+        strokeWidth: 1,
+        pickable: true,
+        getSourcePosition: d => d.from.coordinates,
+        getTargetPosition: d => d.to.coordinates,
+        getSourceColor: d => {
+          const colour = BandColourMapping[d.band_name];
+          return colour;
+        },
+        getTargetColor: d => {
+          const colour = BandColourMapping[d.band_name];
+          return colour;
+        }
+      });
+      console.log(arclayer);
+
+      console.log('Overlay');
+
+      //end first overlay; arcs
+
+
+      //starts scatterplot 1, calls in the data from the section above
+      let data2 = [];
+
+      for (let i = 0; i < data.length; i++) {
+        //console.log("site: "+datac[i].gsx$latitudesite.$t)
+        data2[i] = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              Number(data[i].gsx$longitudesite.$t),
+              Number(data[i].gsx$latitudesite.$t)
+            ]
+          },
+        }
+      }
+
+      const geojson2 = {
+        type: 'FeatureCollection',
+        features: data2
+      }
+
+
+      //styling  scatterplot 1, and establishing the second overlay
+      const geojsonLayer2 = new deck.GeoJsonLayer({
+        id: 'geojsonLayer2',
+        data: geojson2,
+        pickable: true,
+        pointRadiusMinPixels: 1,
+        pointRadiusMaxPixels: 300,
+        wrapLongitude: true,
+        getRadius: d => 100,
+        getFillColor: d => [0, 0, 0]
+      });
+      console.log(geojsonLayer2)
+
+      //end second overlay, scatterplot 1
+
+
+      //starts the  2 scatterplot, calls in the data from the section at top
+       let data3 = [];
+
+
+      for (let i = 0; i < data.length; i++) {
+        //console.log("site: "+datac[i].gsx$latitudesite.$t)
+        if (data[i].gsx$longitudeorigin && data[i].gsx$latitudeorigin.$t) {
+          data3[i] = {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                Number(data[i].gsx$longitudeorigin.$t),
+                Number(data[i].gsx$latitudeorigin.$t)
+              ]
+            },
+          }
+
+        }
+      }
+
+      const geojson3 = {
+        type: 'FeatureCollection',
+        features: data3
+      }
+      const geojsonLayer3 = new deck.GeoJsonLayer({
+        //styling 2 scatterplot, and establishing the third overlay dots will be red
+        id: 'geojsonLayer3',
+        data: geojson3,
+        pickable: true,
+        pointRadiusMinPixels: 1,
+        pointRadiusMaxPixels: 300,
+        wrapLongitude: true,
+        getRadius: d => 100,
+        getFillColor: d => [222, 0, 1,]
+      });
+      console.log(geojsonLayer3)
+
+      const overlay = new deck.GoogleMapsOverlay({
+        layers: [
+          arclayer,
+          geojsonLayer2,
+          geojsonLayer3
+        ]
+      });
+
+      overlay.setMap(map);
+      //end second overlay, 2 scatterplot
+
+      //Info window on click
+      const infowindow = new google.maps.InfoWindow({
+        content: ''
+      });
+
+      map.addListener('click', event => {
+        const picked = overlay._deck.pickObject({
+          x: event.pixel.x,
+          y: event.pixel.y,
+          radius: 4,
+          layerIds: ['arc-layer']
+        });
+
+        if (!picked) {
+          infowindow.close();
+          return;
+        }
+        console.log(picked)
+        infowindow.setContent(`
+          <div> <b>Name:</b> ${picked.object.name}</div>
+		  <div> <b>Band:</b> ${picked.object.band_name}</div>
+		  <div> <b>Language:</b> ${picked.object.language}</div>
+		  <div> <b>Usage:</b> ${picked.object.usage}</div>
+		  <div> <b>Source:</b> ${picked.object.source}</div>
+		  
+        `);
+          infowindow.setPosition({
+          lng: picked.lngLat[0],
+          lat: picked.lngLat[1], 
+		  
+			});
+        infowindow.open(map);
+      });
+	  //end of Info window 
+	  
+
+			  
+    }//end map script
+
+  </script>
+
+  //linking to API to set up the Google Map
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&libraries=visualization&callback=initMap">
+    </script>
+
+  //linking to the deck.gl code
+  <script src="https://unpkg.com/deck.gl@7.3.15/dist.min.js"></script>
+
+  //linking to the data in the spreadsheet
+  <script
+    src="https://spreadsheets.google.com/feeds/list/1AAVrBe_A0SqfTY_l0WxrOhRBVrOOgdJEKrBehxdF0Co/1/public/values?alt=json-in-script&callback=createOverlay">
+    </script>
+
+  <!-- //tooltip
+  <script
+    src="https://deck.gl/#/documentation/developer-guide/adding-interactivity?section=display-a-tooltip-for-hovered-object">
+    </script> -->
+
+</body>
+
+</html>
