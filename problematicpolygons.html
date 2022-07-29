@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="assets/css/ppoly.css" />
+  <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <div id="legend" style="visibility:hidden">
+    <select name="maps" id="mapSelector" onchange="changeMapOverlay(this)">
+      <!--Add new map here along with a google spreadsheet invoking importData at the bottom-->
+      <option value="ppoly">Problematic Polygons</option>
+      <option value="smakw">Smakwuts</option>
+    </select>
+    <div id="legendSlider">
+      <!--Change slider min and max here, values are in percentage-->
+      <input id="sliderRange" type="range" min="50" max="1000" value="100" class="slider">
+    </div>
+    <div id="legendTable"></div>
+  </div>
+
+  <script
+    src="assets/js/ppoly.js">
+  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&libraries=visualization&callback=initMap">
+  </script>
+  <!--Import Data before Colours-->
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/1oI6T_Ppn0hixjYpD4MoLfdENgfTBFANNsrvE1-Mib1Q/values/Sheet1?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&callback=importData">
+  </script>
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/11hxfjU-0HzwYY9oMFb4zTtNB-tE3QMbUKD1MgueWx3g/values/Sheet1?key=AIzaSyDj_r0zmNEDCWkMzK68uSD7BvD7WfjLwJM&callback=importData">
+  </script>
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/1oI6T_Ppn0hixjYpD4MoLfdENgfTBFANNsrvE1-Mib1Q/values/BandColours?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&callback=importColour">
+  </script>
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/1oI6T_Ppn0hixjYpD4MoLfdENgfTBFANNsrvE1-Mib1Q/values/LanguageColours?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&callback=importColour">
+  </script>
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/1oI6T_Ppn0hixjYpD4MoLfdENgfTBFANNsrvE1-Mib1Q/values/UsageColours?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&callback=importColour">
+  </script>
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/11hxfjU-0HzwYY9oMFb4zTtNB-tE3QMbUKD1MgueWx3g/values/StoryColours?key=AIzaSyDj_r0zmNEDCWkMzK68uSD7BvD7WfjLwJM&callback=importColour">
+  </script>
+</body>
+
+</html>

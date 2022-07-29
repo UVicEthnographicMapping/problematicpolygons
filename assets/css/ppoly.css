@@ -1,0 +1,100 @@
+#map {
+    height: 100%;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#legend {
+    border-radius: 15px;
+    background: white;
+    padding: 5px;
+    margin: 10px;
+    transition: all 0.5s ease 0.5s !important;
+    max-height: 65%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#legend:hover {
+    box-shadow: 0 0 50px 5px #1DB9E8;
+}
+
+#legend-table {
+    text-align: left;
+}
+
+#padding-top-bottom-zero {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#margin-top-bottom-zero {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.colourSelect {
+    border: none;
+    padding: 0;
+    height: 1em;
+    width: 2em;
+}
+
+.filterSelect {
+    text-decoration: underline;
+    cursor: default;
+}
+
+.filterSelect:hover {
+    font-style: italic;
+}
+
+table {
+    border-spacing: 0px;
+    /* Removes the cell spacing via CSS */
+    border-collapse: collapse;
+    overflow: auto;
+    width: 100%;
+    margin-right: 1em;
+}
+
+#column-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-columns {
+    display: none;
+    position: absolute;
+    background-color: #e8e8e8;
+    min-width: 6em;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    text-align: center;
+}
+
+.dropdown-columns p {
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.dropdown-columns p:hover {
+    font-weight: bold;
+}
+
+#column-selector:hover .dropdown-columns {
+    display: block;
+}
+
+#sliderRange {
+    width: 90%;
+}
+
+.slider:hover {
+    opacity: 1;
+}
