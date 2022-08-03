@@ -243,26 +243,30 @@
 
       //importing and setting data from the Google Sheet which is online and publicly shared https://docs.google.com/spreadsheets/d/1AAVrBe_A0SqfTY_l0WxrOhRBVrOOgdJEKrBehxdF0Co/edit#gid=0
       //telling the whole column to read to establish the scatterplot and the start (from) and end (to) points for the arcs
-      let data = spreadsheetData.feed.entry;
+      let data = spreadsheetData.values;
+      let data_headers = {};
+      for (let i = 0; i < data[0].length; i++) {
+        data_headers[data[0][i]] = i;
+      }
 
       let arc_data = [];
       for (let i = 0; i < data.length; i++) {
         arc_data.push({
           from: {
             name: 'From',
-            coordinates: [Number(data[i].gsx$longitudesite.$t), Number(data[i].gsx$latitudesite.$t)]
+            coordinates: [Number(data[i][data_headers["Longitude_Origin"]]), Number(data[i][data_headers["Latitude_Origin"]])]
           },
 
           to: {
             name: 'To',
-            coordinates: [Number(data[i].gsx$longitudeorigin.$t), Number(data[i].gsx$latitudeorigin.$t)]
+            coordinates: [Number(data[i][data_headers["Longitude_Site"]]), Number(data[i][data_headers["Latitude_Site"]])]
           },
 		  
-          band_name: data[i].gsx$band.$t,
-		  name: data[i].gsx$nameorigionaltosource.$t,
-		  language: data[i].gsx$language.$t,
-          usage: data[i].gsx$usage.$t,
-		  source: data[i].gsx$idfromsource.$t
+          band_name: data[i][data_headers["Band"]],
+		  name: data[i][data_headers["Name_Origional_to_Source"]],
+		  language: data[i][data_headers["Language"]],
+          usage: data[i][data_headers["Usage"]],
+		  source: data[i][data_headers["ID_from_Source"]]
 		  		 							
 		});
       }
@@ -313,7 +317,7 @@
       //styling the arcs, refering to the section above to get the data, and to the section directly above to get the colours based on bands
       //data = arc_data;
  
-      const arclayer = new ArcLayer({
+      const arclayer = new deck.ArcLayer({
 
         id: 'arc-layer',
         data: arc_data,
@@ -342,14 +346,13 @@
       let data2 = [];
 
       for (let i = 0; i < data.length; i++) {
-        //console.log("site: "+datac[i].gsx$latitudesite.$t)
         data2[i] = {
           type: 'Feature',
           geometry: {
             type: 'Point',
             coordinates: [
-              Number(data[i].gsx$longitudesite.$t),
-              Number(data[i].gsx$latitudesite.$t)
+              Number(data[i][data_headers["Longitude_Site"]]),
+              Number(data[i][data_headers["Latitude_Site"]])
             ]
           },
         }
@@ -382,15 +385,14 @@
 
 
       for (let i = 0; i < data.length; i++) {
-        //console.log("site: "+datac[i].gsx$latitudesite.$t)
-        if (data[i].gsx$longitudeorigin && data[i].gsx$latitudeorigin.$t) {
+        if (data[i][data_headers["Longitude_Origin"]] && data[i][data_headers["Latitude_Origin"]]) {
           data3[i] = {
             type: 'Feature',
             geometry: {
               type: 'Point',
               coordinates: [
-                Number(data[i].gsx$longitudeorigin.$t),
-                Number(data[i].gsx$latitudeorigin.$t)
+                Number(data[i][data_headers["Longitude_Origin"]]),
+                Number(data[i][data_headers["Latitude_Origin"]])
               ]
             },
           }
@@ -467,17 +469,17 @@
 
   </script>
 
-  //linking to API to set up the Google Map
+  <!--linking to API to set up the Google Map-->
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7mQ-DUBq-R6qKhNOjTQomsvUm56Z7PoA&libraries=visualization&callback=initMap">
     </script>
 
-  //linking to the deck.gl code
-  <script src="https://unpkg.com/deck.gl@7.3.15/dist.min.js"></script>
+  <!--linking to the deck.gl code-->
+  <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
 
-  //linking to the data in the spreadsheet
+  <!--linking to the data in the spreadsheet-->
   <script
-    src="https://spreadsheets.google.com/feeds/list/1AAVrBe_A0SqfTY_l0WxrOhRBVrOOgdJEKrBehxdF0Co/1/public/values?alt=json-in-script&callback=createOverlay">
+    src="https://sheets.googleapis.com/v4/spreadsheets/1AAVrBe_A0SqfTY_l0WxrOhRBVrOOgdJEKrBehxdF0Co/values/Sheet1?key=AIzaSyDj_r0zmNEDCWkMzK68uSD7BvD7WfjLwJM&callback=createOverlay">
     </script>
 
   <!-- //tooltip
