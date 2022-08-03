@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style type="text/css">
+    #map {
+      height: 100%;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #legend {
+      border-radius: 15px;
+      background: white;
+      padding: 5px;
+      margin: 10px;
+      transition: all 0.5s ease 0.5s !important;
+    }
+
+    #legend:hover {
+      box-shadow: 0 0 112px 10px #1DB9E8;
+    }
+
+    #padding-top-bottom-zero {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    #margin-top-bottom-zero {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    table {
+      border-spacing: 0px;
+      /* Removes the cell spacing via CSS */
+      border-collapse: collapse;
+      overflow: auto;
+      width: 100%;
+    }
+  </style>
+
+  <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+</head>
+
+<body>
+
+  <div id="map"></div>
+
+  <div id="legend">
+
+    <table class="nospacing" cellspacing="0">
+      <tr>
+        <th>Story</th>
+        <th>Colour</th>
+      </tr>
+
+      <tr>
+        <td>Smakwuts</td>
+        <td><text style="color:rgb(15, 0, 154);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Transformers</td>
+        <td><text style="color:rgb(9, 110, 15);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Lovers</td>
+        <td><text style="color:rgb(246, 16, 24);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Smakwuts_Son</td>
+        <td><text style="color:rgb(252, 165, 14);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Swaneset</td>
+        <td><text style="color:rgb(233, 51, 235);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Sowittan</td>
+        <td><text style="color:rgb(22, 230, 230);">━━━━</text></td>
+      </tr>
+
+      <tr>
+        <td>Basket_Ogress</td>
+        <td><text style="color:rgb(19, 243, 19);">━━━━</text></td>
+      </tr>
+
+
+    </table>
+
+  </div>
+
+  <script>
+    //creates the blank Google Map
+    let map;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        mapId: "a8bebcab46e22685",
+        center: { lat: 48.779, lng: -123.625 },
+        zoom: 9,
+        //styles the look of the map, generated using https://mapstyle.withgoogle.com/
+        styles: [
+          { "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }] },
+          { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+          { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
+          { "elementType": "labels.text.stroke", "stylers": [{ "color": "#f5f5f5" }] },
+          { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "administrative.land_parcel", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] },
+          { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
+          { "featureType": "poi", "elementType": "labels.text", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
+          { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
+          { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
+          { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }] },
+          { "featureType": "road", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.arterial", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
+          { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#dadada" }] },
+          { "featureType": "road.highway", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
+          { "featureType": "road.local", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.local", "elementType": "labels", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
+          { "featureType": "transit", "stylers": [{ "visibility": "off" }] },
+          { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
+          { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
+          { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#c9c9c9" }] },
+          { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }],
+        disableDoubleClickZoom: true,
+        streetViewControl: false
+      });
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+    }
+  </script>
+
+  <script>
+    class AnimatedArcLayer extends deck.ArcLayer {
+      getShaders() {
+        const shaders = super.getShaders();
+        shaders.inject = {
+          'vs:#decl': `\
+            uniform vec2 timeRange;
+            attribute float instanceSourceTimestamp;
+            attribute float instanceTargetTimestamp;
+            varying float vTimestamp;
+          `,
+          'vs:#main-end': `\
+             vTimestamp = mix(instanceSourceTimestamp, instanceTargetTimestamp, segmentRatio);
+          `,
+          'fs:#decl': `\
+            uniform vec2 timeRange;
+            varying float vTimestamp;
+          `,
+          'fs:#main-start': `\
+            if (vTimestamp < timeRange.x || vTimestamp > timeRange.y) {
+              discard;
+            }
+          `,
+          'fs:DECKGL_FILTER_COLOR': `\
+            color.a *= (vTimestamp - timeRange.x) / (timeRange.y - timeRange.x);`
+        };
+          return shaders;
+      }
+
+      initializeState() {
+        super.initializeState();
+        this.getAttributeManager().addInstanced({
+          instanceSourceTimestamp: {
+            size: 1,
+            accessor: 'getSourceTimestamp'
+          },
+          instanceTargetTimestamp: {
+            size: 1,
+            accessor: 'getTargetTimestamp'
+          }
+        });
+      }
+
+      draw(params) {
+        params.uniforms = Object.assign({}, params.uniforms, {
+          timeRange: this.props.timeRange
+        });
+        super.draw(params);
+      }
+    }
+
+    AnimatedArcLayer.layerName = 'AnimatedArcLayer';
+    AnimatedArcLayer.defaultProps = {
+      getSourceTimestamp: {type: 'accessor', value: 0},
+      getTargetTimestamp: {type: 'accessor', value: 1},
+      timeRange: {type: 'array', compare: true, value: [0, 1]}
+    };
+    //tells the map to execute an overlay
+    function createOverlay(spreadsheetData) {
+      const TIME_WINDOW = 200;
+      const MIN_TIME = 1500;
+      const MAX_TIME = 2000;
+
+      //importing and setting data from the Google Sheet which is online and publicly shared https://docs.google.com/spreadsheets/d/1s9VyISLxf3SRp7RNKrwsT_Zd1Ym5kOd3y_Kt_ii4Nf4/edit#gid=386762990
+      //telling the whole column to read to establish the scatterplot and the start (from) and end (to) points for the arcs
+      let data = spreadsheetData.values;
+      let data_headers = {};
+      for (let i = 0; i < data[0].length; i++) {
+        data_headers[data[0][i]] = i;
+      }
+
+      let arc_data = [];
+      for (let i = 1; i < data.length; i++) {
+        arc_data.push({
+          from: {
+            name: 'From',
+            coordinates: [Number(data[i][data_headers["Longitude_Site"]]), Number(data[i][data_headers["Latitude_Site"]])]
+          },
+          to: {
+            name: 'To',
+            coordinates: [Number(data[i][data_headers["Longitude_Origin"]]), Number(data[i][data_headers["Latitude_Origin"]])]
+          },
+          story_name: data[i][data_headers["Story"]],
+          time1: MIN_TIME,
+          time2: MAX_TIME
+        });
+      }
+
+      //setting colours for the arcs, the Story need to match the spreadsheet identically
+      const StoryColourMapping = {
+        'Smakwuts': [15, 0, 154, 194],
+        'Transformers': [9, 110, 15, 194],
+        'Lovers': [246, 16, 24, 194],
+        'Smakwuts_Son': [252, 165, 14, 194],
+        'Swaneset': [233, 51, 235, 194],
+        'Sowittan': [22, 230, 230, 194],
+        'Basket_Ogress': [19, 243, 19, 194],
+
+      };
+
+      //styling the arcs, refering to the section above to get the data, and to the section directly above to get the colours based on Story
+      //data = arc_data;
+      
+      let currentTime = MIN_TIME;
+
+      //starts scatterplot 1, calls in the data from the section above
+      let data2 = [];
+
+      for (let i = 0; i < data.length; i++) {
+        data2[i] = {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              Number(data[i][data_headers["Longitude_Site"]]),
+              Number(data[i][data_headers["Latitude_Site"]])
+            ]
+          },
+        }
+      }
+
+      const geojson2 = {
+        type: 'FeatureCollection',
+        features: data2
+      }
+
+
+      //styling  scatterplot 1, and establishing the second overlay
+      const geojsonLayer2 = new deck.GeoJsonLayer({
+        id: 'geojsonLayer2',
+        data: geojson2,
+        pickable: true,
+        pointRadiusMinPixels: 1,
+        pointRadiusMaxPixels: 300,
+        wrapLongitude: true,
+        getPointRadius: d => 100,
+        getFillColor: d => [0, 0, 0]
+      });
+
+      //end second overlay, scatterplot 1
+
+
+      //starts the  2 scatterplot, calls in the data from the section at top
+      let data3 = [];
+
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i][data_headers["Longitude_Origin"]] && data[i][data_headers["Latitude_Origin"]]) {
+          data3[i] = {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                Number(data[i][data_headers["Longitude_Origin"]]),
+                Number(data[i][data_headers["Latitude_Origin"]])
+              ]
+            },
+          }
+
+        }
+      }
+
+      const geojson3 = {
+        type: 'FeatureCollection',
+        features: data3
+      }
+      const geojsonLayer3 = new deck.GeoJsonLayer({
+        //styling 2 scatterplot, and establishing the third overlay dots will be red
+        id: 'geojsonLayer3',
+        data: geojson3,
+        pickable: true,
+        pointRadiusMinPixels: 1,
+        pointRadiusMaxPixels: 300,
+        wrapLongitude: true,
+        getPointRadius: d => 100,
+        getFillColor: d => [222, 0, 1,]
+      });
+
+      const arclayer = new deck.ArcLayer({
+        id: 'static-arcs-layer',
+        data: arc_data,
+        getWidth: 1,
+        strokeWidth: 1,
+        pickable: true,
+        getSourcePosition: d => d.from.coordinates,
+        getTargetPosition: d => d.to.coordinates,
+        getSourceColor: d => {
+          const colour = StoryColourMapping[d.story_name];
+          return colour;
+        },
+        getTargetColor: d => {
+          const colour = StoryColourMapping[d.story_name];
+          return colour;
+        }
+      });
+      //end first overlay; arcs
+
+      const overlay = new deck.GoogleMapsOverlay({});
+      setInterval(() => {
+        overlay.setProps({
+          layers: [
+            new AnimatedArcLayer({
+              id: 'arcs-layer',
+              data: arc_data,
+              visible: MIN_TIME - TIME_WINDOW < currentTime && MAX_TIME > currentTime,
+              getSourcePosition: d => d.from.coordinates,
+              getTargetPosition: d => d.to.coordinates,
+              getSourceTimestamp: d => d.time1,
+              getTargetTimestamp: d => d.time2,
+              getWidth: 4,
+              strokeWidth: 3,
+              pickable: true,
+              timeRange: [currentTime, currentTime + TIME_WINDOW],
+              getSourceColor: d => {
+                const colour = StoryColourMapping[d.story_name];
+                return colour;
+              },
+              getTargetColor: d => {
+                const colour = StoryColourMapping[d.story_name];
+                return colour;
+               }
+            }),
+            arclayer,
+            geojsonLayer2,
+            geojsonLayer3
+          ]
+        });
+
+        currentTime = currentTime + 5;
+
+        if (currentTime >= MAX_TIME) {
+          currentTime = MIN_TIME - TIME_WINDOW;
+        }
+      }, 50);
+
+      overlay.setMap(map);
+      //end second overlay, 2 scatterplot
+
+      //Info window on click
+      const infowindow = new google.maps.InfoWindow({
+        content: ''
+      });
+
+      //end of Info window 
+
+
+
+    }//end map script
+
+  </script>
+
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHSqRvWl5DTxstxxFwR2BxI_o43vl3VxU&libraries=visualization&callback=initMap">
+  </script>
+
+  <script
+    src="https://sheets.googleapis.com/v4/spreadsheets/1fRI1qdz3DlhZwe8uLfWGYY-1zPotrV3HnhIywJ_OEX0/values/Sheet1?key=AIzaSyDj_r0zmNEDCWkMzK68uSD7BvD7WfjLwJM&callback=createOverlay">
+  </script>
+</body>
+
+</html>
