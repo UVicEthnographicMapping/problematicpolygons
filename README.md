@@ -19,7 +19,7 @@ To add or remove map data or colours, it is only necessary to change the problem
 
 Adding a new data spreadsheet:
 
-1. Locate “<!--Import Data before Colours-->“ in the html file.
+1. Locate ```<!--Import Data before Colours-->``` in the html file.
 
 2. Add a script tag with the google spreadsheet Id and the tab name:
 
@@ -35,7 +35,7 @@ Adding a new data spreadsheet:
 
 4. Add the data id and name to the legend options:
 
-  a. Locate “<!--Add new map here along with a google spreadsheet invoking importData at the bottom-->“ in the html file.
+  a. Locate ```<!--Add new map here along with a google spreadsheet invoking importData at the bottom-->``` in the html file.
 
   b. Add a new option (will appear in order):
 
