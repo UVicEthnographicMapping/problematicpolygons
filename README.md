@@ -13,6 +13,7 @@ HTML contains is divided into head and body tags. The head tag loads ppoly.css w
 Data should come as a google spreadsheet tab (Usually Sheet1). It should contain an ID as the first column followed by the Latitude origin and target columns as well as Longitude origin and target columns, totaling 5 columns (Id and LatLon). The 6th column (F) onwards can contain any extra properties you wish to have connected to each of the geographic points (rows). The code will automatically load these properties into an information window when you click the arcs or circles.
 
 Like with data, colours should come as a google spreadsheet tab and will be tied to the property columns (6th onwards) and will appear in the legend for their respective map. The map identifiers can be located as options in the mapSelector tag inside the problematicpolygons.html file. The first cell for each colour spreadsheet must have the map identifier followed by a period (.) and the column name from the data spreadsheet. The other columns should contain the RGB values that will be used as default colours for properties of the maps.
+
 To add or remove map data or colours, it is only necessary to change the problematicpolygons.html file. For any specific data point changes modify the associated google spreadsheet.
 
 ## Example
