@@ -233,7 +233,7 @@ function updateLegendData(header) {
   oldLegendTable.parentNode.insertBefore(legendTable, oldLegendTable);
   oldLegendTable.parentNode.removeChild(oldLegendTable);
 
-  // Base shell
+  // Base shell: empty table (no header row)
   legendTable.innerHTML = `<table id=\"legend-table\" class=\"nospacing\" cellspacing=\"0\"></table>`;
 
   var legend_table = document.getElementById("legend-table");
@@ -241,16 +241,18 @@ function updateLegendData(header) {
   var cell = row.insertCell(0);
   cell.colSpan = 2;
 
-  // Segmented control: Language | Band
+  const isSmakw = (selectedMap === 'smakw');
   const colorBy = mapData[selectedMap].colorBy || 'Band';
-  buildSegmentedControl(cell, colorBy);
 
-  // === Filter by Use directly under the segmented control ===
-  buildUseRadioList(cell);
+  if (!isSmakw) {
+    // Full UI for Problematic Polygons: segmented control + Use filter
+    buildSegmentedControl(cell, colorBy);
+    buildUseRadioList(cell);
+  }
 
-  // === Color legend (switches when Language/Band toggled), now below Use ===
+  // === Color legend ===
   const colorsLabel = document.createElement('div');
-  colorsLabel.textContent = (colorBy === 'Language' ? 'Language colors' : 'Band colors');
+  colorsLabel.textContent = `${colorBy} colors`;
   colorsLabel.style.fontSize = '12px';
   colorsLabel.style.fontWeight = '600';
   colorsLabel.style.margin = '6px 0 4px 0';
@@ -267,7 +269,7 @@ function updateLegendData(header) {
     Object.keys(colMap).forEach(function(key){
       const rgba = colMap[key];
       const swatch = document.createElement('div');
-      // Match original inputs' look: small rectangular (≈2em x 1em)
+      // small rectangular chip similar to original inputs
       swatch.style.width = '2em';
       swatch.style.height = '1em';
       swatch.style.borderRadius = '2px';
@@ -290,7 +292,7 @@ function updateLegendData(header) {
   }
   cell.appendChild(colorLegendWrap);
 
-  // Slider block
+  // Slider block (kept for both modes)
   const sliderWrap = document.createElement('div');
   sliderWrap.style.marginTop = '8px';
   const sliderLabel = document.createElement('div');
@@ -299,8 +301,8 @@ function updateLegendData(header) {
   sliderLabel.style.fontWeight = '600';
   sliderWrap.appendChild(sliderLabel);
 
-  // Keep existing slider element but reset defaults based on use
-  setSliderDefault(mapData[selectedMap].usageFilter !== USAGE_ALL);
+  // Defaults: emphasize only when a specific Use is selected (PP only). For Smakw, always small default.
+  setSliderDefault(!isSmakw && mapData[selectedMap].usageFilter !== USAGE_ALL);
 }
 
 function updateAll(header) {
@@ -313,7 +315,20 @@ function updateAll(header) {
 
 function changeMapOverlay(event) {
   selectedMap = event.value;
-  // Reset per-map UI defaults on dataset switch
+
+  // Determine available colour keys for this dataset
+  const colourKeys = Object.keys((mapData[selectedMap] && mapData[selectedMap].colourMappingData) || {});
+
+  // Smakwuts: minimal UI (no filters / segmented control). Just color by the first available key.
+  if (selectedMap === 'smakw') {
+    const firstKey = colourKeys.length ? colourKeys[0] : 'Band';
+    mapData[selectedMap].colorBy = firstKey;
+    mapData[selectedMap].usageFilter = USAGE_ALL; // ensure no filtering
+    updateAll(firstKey);
+    return;
+  }
+
+  // Default dataset (Problematic Polygons): keep Band as default and allow filters
   mapData[selectedMap].colorBy = 'Band';
   mapData[selectedMap].usageFilter = USAGE_ALL;
   updateAll('Band');
