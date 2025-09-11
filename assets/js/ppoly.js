@@ -234,9 +234,7 @@ function updateLegendData(header) {
   oldLegendTable.parentNode.removeChild(oldLegendTable);
 
   // Base shell
-  legendTable.innerHTML = `<table id=\"legend-table\" class=\"nospacing\" cellspacing=\"0\">
-    <tr><th id=\"column-selector\" style=\"padding-bottom:6px\"></th><th></th></tr>
-  </table>`;
+  legendTable.innerHTML = `<table id=\"legend-table\" class=\"nospacing\" cellspacing=\"0\"></table>`;
 
   var legend_table = document.getElementById("legend-table");
   var row = legend_table.insertRow(-1); // one row, left cell holds our controls
