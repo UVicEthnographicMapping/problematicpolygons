@@ -110,7 +110,7 @@ function importData(spreadsheetData) {
     geoFeatures1: geoFeatures1,
     geoFeatures2: geoFeatures2,
     colourMappingData: mapData[mapSelector[timesImported].value]?.colourMappingData || {},
-    colorBy: 'Language',       // always color by Language or Band (default Language)
+    colorBy: 'Band',       // always color by Language or Band (default Language)
     usageFilter: USAGE_ALL     // 'ALL' or one of 'A'..'E'
   };
 }
@@ -235,7 +235,7 @@ function updateLegendData(header) {
 
   // Base shell
   legendTable.innerHTML = `<table id=\"legend-table\" class=\"nospacing\" cellspacing=\"0\">
-    <tr><th id=\"column-selector\" style=\"padding-bottom:6px\">Legend</th><th></th></tr>
+    <tr><th id=\"column-selector\" style=\"padding-bottom:6px\"></th><th></th></tr>
   </table>`;
 
   var legend_table = document.getElementById("legend-table");
@@ -244,7 +244,7 @@ function updateLegendData(header) {
   cell.colSpan = 2;
 
   // Segmented control: Language | Band
-  const colorBy = mapData[selectedMap].colorBy || 'Language';
+  const colorBy = mapData[selectedMap].colorBy || 'Band';
   buildSegmentedControl(cell, colorBy);
 
   // === Filter by Use directly under the segmented control ===
@@ -307,7 +307,7 @@ function updateLegendData(header) {
 
 function updateAll(header) {
   // header is expected to be 'Language' or 'Band' (color source)
-  mapData[selectedMap].colorBy = header || mapData[selectedMap].colorBy || 'Language';
+  mapData[selectedMap].colorBy = header || mapData[selectedMap].colorBy || 'Band';
   updateLegendData(mapData[selectedMap].colorBy);
   updateData(mapData[selectedMap].colorBy);
   createOverlay(mapData[selectedMap].colorBy);
@@ -316,9 +316,9 @@ function updateAll(header) {
 function changeMapOverlay(event) {
   selectedMap = event.value;
   // Reset per-map UI defaults on dataset switch
-  mapData[selectedMap].colorBy = 'Language';
+  mapData[selectedMap].colorBy = 'Band';
   mapData[selectedMap].usageFilter = USAGE_ALL;
-  updateAll('Language');
+  updateAll('Band');
 }
 
 // Google Map init
@@ -498,9 +498,9 @@ var startupInterval = setInterval(() => {
     document.getElementById('mapSelector').value = selectedMap;
     // Default to Language with All Uses
     if (!mapData[selectedMap]) { return; }
-    mapData[selectedMap].colorBy = 'Language';
+    mapData[selectedMap].colorBy = 'Band';
     mapData[selectedMap].usageFilter = USAGE_ALL;
-    updateAll('Language');
+    updateAll('Band');
     clearInterval(startupInterval);
   }
 }, 200);
