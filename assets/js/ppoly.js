@@ -25,15 +25,15 @@ const USAGE_LABELS = {
 };
 const USAGE_ALL = "ALL";
 
-// Slider default fraction for emphasized usage (~40%)
+// Slider default fraction for usage (~40%)
 const USAGE_SLIDER_DEFAULT_FRACTION = 0.4;
 
-// Helpers: color conversions (for potential future use)
+// Helpers: color conversions 
 function ColorToHex(color) { const h = color.toString(16); return h.length == 1 ? "0" + h : h; }
 function ConvertRGBtoHex(rgb) { return "#" + ColorToHex(rgb[0]) + ColorToHex(rgb[1]) + ColorToHex(rgb[2]); }
 function ConvertHextoRGB(hex) { return [parseInt(hex[1]+hex[2],16), parseInt(hex[3]+hex[4],16), parseInt(hex[5]+hex[6],16), alpha]; }
 
-// Parse the Usage cell into tokens A–E, tolerant to commas/semicolons/slashes/spaces
+// Parsing function for Usage cell into tokens A–E
 function usageTokens(value) {
   if (!value) return [];
   const tokens = String(value).toUpperCase().match(/[A-E]/g);
@@ -103,15 +103,14 @@ function importData(spreadsheetData) {
   }
   timesImported++;
   let mapSelector = document.getElementById("mapSelector");
-  // Initialize per-map UI state for this simplified Option B′
   mapData[mapSelector[timesImported].value] = {
     data_headers: data_headers,
     arcData: arcData,
     geoFeatures1: geoFeatures1,
     geoFeatures2: geoFeatures2,
     colourMappingData: mapData[mapSelector[timesImported].value]?.colourMappingData || {},
-    colorBy: 'Band',       // always color by Language or Band (default Language)
-    usageFilter: USAGE_ALL     // 'ALL' or one of 'A'..'E'
+    colorBy: 'Band',       
+    usageFilter: USAGE_ALL     
   };
 }
 
@@ -212,7 +211,7 @@ function buildUseRadioList(container) {
       } else {
         mapData[selectedMap].usageFilter = key;
       }
-      // Slider emphasis for specific use
+      // Slider change for specific use
       setSliderDefault(mapData[selectedMap].usageFilter !== USAGE_ALL);
       updateAll(mapData[selectedMap].colorBy);
     });
@@ -227,7 +226,6 @@ function buildUseRadioList(container) {
 }
 
 function updateLegendData(header) {
-  // Rebuild legend markup with minimal, modern UI
   var oldLegendTable = document.getElementById("legendTable");
   var legendTable = oldLegendTable.cloneNode(true);
   oldLegendTable.parentNode.insertBefore(legendTable, oldLegendTable);
@@ -237,7 +235,7 @@ function updateLegendData(header) {
   legendTable.innerHTML = `<table id=\"legend-table\" class=\"nospacing\" cellspacing=\"0\"></table>`;
 
   var legend_table = document.getElementById("legend-table");
-  var row = legend_table.insertRow(-1); // one row, left cell holds our controls
+  var row = legend_table.insertRow(-1); // one row, left cell holds controls
   var cell = row.insertCell(0);
   cell.colSpan = 2;
 
@@ -269,7 +267,6 @@ function updateLegendData(header) {
     Object.keys(colMap).forEach(function(key){
       const rgba = colMap[key];
       const swatch = document.createElement('div');
-      // small rectangular chip similar to original inputs
       swatch.style.width = '2em';
       swatch.style.height = '1em';
       swatch.style.borderRadius = '2px';
@@ -292,7 +289,7 @@ function updateLegendData(header) {
   }
   cell.appendChild(colorLegendWrap);
 
-  // Slider block (kept for both modes)
+  // Slider block 
   const sliderWrap = document.createElement('div');
   sliderWrap.style.marginTop = '8px';
   const sliderLabel = document.createElement('div');
@@ -301,7 +298,7 @@ function updateLegendData(header) {
   sliderLabel.style.fontWeight = '600';
   sliderWrap.appendChild(sliderLabel);
 
-  // Defaults: emphasize only when a specific Use is selected (PP only). For Smakw, always small default.
+  // Defaults: emphasize only when a specific Use is selected (PPoly only). For Smakw, always small default.
   setSliderDefault(!isSmakw && mapData[selectedMap].usageFilter !== USAGE_ALL);
 }
 
@@ -319,11 +316,11 @@ function changeMapOverlay(event) {
   // Determine available colour keys for this dataset
   const colourKeys = Object.keys((mapData[selectedMap] && mapData[selectedMap].colourMappingData) || {});
 
-  // Smakwuts: minimal UI (no filters / segmented control). Just color by the first available key.
+  // Smakwuts: no filters / segmented control
   if (selectedMap === 'smakw') {
     const firstKey = colourKeys.length ? colourKeys[0] : 'Band';
     mapData[selectedMap].colorBy = firstKey;
-    mapData[selectedMap].usageFilter = USAGE_ALL; // ensure no filtering
+    mapData[selectedMap].usageFilter = USAGE_ALL; // for no filtering
     updateAll(firstKey);
     return;
   }
@@ -486,7 +483,6 @@ function createOverlay(header) {
 }
 
 function updateData(header) {
-  // Filter by Use only (no category filters in this minimal UI)
   const idxUse = mapData[selectedMap]["data_headers"]["Usage"];
   const selectedUse = mapData[selectedMap].usageFilter; // 'ALL' or 'A'..'E'
 
